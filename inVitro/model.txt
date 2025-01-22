@@ -1,0 +1,13 @@
+model
+{
+    r ~ dunif(0.00000E+00, 0.5)
+    k ~ dunif(10, 15)
+    tau <- 1/(sigma * sigma)
+    sigma ~ dunif(0.00000E+00, 100)
+    for (i in 1:12) {
+        mu[i] <- 1 * k * exp(r * time[i])/((k - 1) + 1 * exp(r * 
+            time[i]))
+        logTiter[i] ~ dnorm(mu[i], tau)
+        logTiter_pred[i] ~ dnorm(mu[i], tau)
+    }
+}

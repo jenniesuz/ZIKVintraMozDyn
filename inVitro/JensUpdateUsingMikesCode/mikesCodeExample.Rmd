@@ -1,0 +1,263 @@
+---
+title: "Chimeric_Virus_Modelling"
+author: "Notes from mike"
+date: "2023-11-28"
+output: html_document
+---
+
+
+This R-markdown file outlines the code used to fit an ODE for virus growth to chimeric virus data (using standard maximum likelihood methods). The proposed virus growth model is of the form:
+
+
+\[
+\frac{dV}{dt}=-\eta V(t)+\frac{\beta V(t) (C-V(t))}{1+\gamma (C-V(t))}
+\]
+
+where $\eta$ is virus decay rate, $\beta$ is virus to cell transmission rate and $\gamma$ is the scaling parameter associated with the density of susceptible cells ($C$).
+
+------------------------------------------------------------
+
+The following R code defines a Gaussian likelihood for the model fitting - the code integrates the model based on a set of parameters with the aim to minimize the negative log-likelihood (and obtain the best set of parameters that correspond to to the data).
+
+It uses the chimeric virus 1 as an example and is estimating four parameters: $\eta=p[1]$,  $\beta=p[2]$,  $\gamma=p[3]$ and, from the Gaussian likelihood function, the standard deviation, $\sigma=p[4]$.
+
+This set of code just sets up the data to use.
+
+```{r}
+rm(list=ls())
+
+#make a data frame for one of the chimeric viruses
+
+V=structure(list(
+  cv1=c(90,31000,27000,170000,140,24000,30000,120000,90,17000,70000,190000,450,
+        155000,135000,850000,700,120000,150000,60000,450,85000,350000,950000),
+  rep=c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6),
+  time=c(24,48,72,96,24,48,72,96,24,48,72,96,
+         24,48,72,96,24,48,72,96,24,48,72,96)),
+  .Names=c("cv1","rep","time"),
+  class= "data.frame")
+
+plot(seq(0,100,length=10),seq(0,13,length=10),type="n",bty="l",
+     xlab="Time (hrs)",ylab="log(Virus Titre)")
+
+for(i in 4:6)
+  points(V[V[,2]==i,3],log(V[V[,2]==i,1]),pch=19)
+
+```
+
+The following function defines the likelihood. The algorithm integrates the ODE and compares the model (at the appropriate time points) to the data and returns the overall likelihood value for a given set of parameters. Just to note = the total number of cells $C$ is fixed.
+
+```{r}
+
+#define Gaussian likelihood function with correlated 
+#errors for an unknown parameter vector p from an ODE
+
+fn=function(p){
+
+#----------------------------------------------------------------
+#define the ODEs to be fitted to the data
+nvar=1
+C=12
+
+y=array(dim=(nvar))
+
+derivs<-function(x,y){
+	yx[1]=-p[1]*y[1]+p[2]*y[1]*(C-y[1])/(1+p[3]*(C-y[1]))
+	yx
+}
+
+#----------------------------------------------------------------
+
+#set some model initial conditions 
+
+y[1]=0.1
+
+#----------------------------------------------------------------
+
+#set the number of iterations (obs), integration step (h)  and start time (v)
+
+obs=10000
+v=0.0
+h=0.01
+
+#----------------------------------------------------------------
+
+#arrays for the RK4 integrator (see below)
+
+yt=array(1:nvar)
+dyt=array(1:nvar)
+dym=array(1:nvar)
+yout=array(1:nvar)
+yx=array(1:nvar)
+eqn=array(1:nvar)
+
+
+#The next set of code defines, as a function, the RK4 integrator:
+
+rk4=function(dydx,y,t,n){
+for(jj in	1:n)
+	yt[jj]=y[jj]+dydx[jj]*h/2
+	dyt=derivs(t+h/2,yt)
+for(jj in 1:n)	
+	yt[jj]=y[jj]+h/2*dyt[jj]
+	dym=derivs(t+h/2,yt)
+for(jj in 1:n)
+	yt[jj]=y[jj]+h*dym[jj]
+	dym=dyt+dym
+	dyt=derivs(t+h,yt)
+for(jj in 1:n)
+	yout[jj]=y[jj]+(h/6)*(dydx[jj]+dyt[jj]+2*dym[jj])
+	yout
+}
+
+#----------------------------------------------------------------
+
+#The next set of code sets out the main part integrating the model
+
+#define an output array
+
+x1=array(dim=c(obs))
+
+#iterate the model 
+
+for(i in 1:obs){
+	eqn=derivs(v,y)
+	y=rk4(eqn,y,v,nvar)
+
+	v=v+h
+	x1[i]=y
+}
+
+#----------------------------------------------------------------
+
+#define the likelihood and fit model to the data to determine vector of parameters (p)
+
+tpoints=V[,3]*h*obs
+
+tmp=0.0
+
+for(j in 1:3){ #use the three chimeric virus 1 replicates 
+  
+dat=log(V[V[,2]==3+j,1])
+
+        for(i in 1:4){ # over the four time points
+            likl=(x1[tpoints[i]]-dat[i])^2/(2*p[4]^2)
+            tmp=tmp+likl+0.5*log(2*pi)+log(p[4])
+        }
+}     
+        tmp
+        
+#----------------------------------------------------------------
+} #end of likelihood function
+
+#----------------------------------------------------------------
+```
+
+```{r}
+#run optimization code
+
+#define the initial parameter set 
+
+p=c(0.95,0.00001,0.1,1.0) 
+
+#use appropriate optimization routine (in R - default is Nelder-Mead) 
+
+out=optim(p,fn)
+
+#displays parameter estimates 
+
+out$par
+```
+
+
+
+Next set of code plots the data and the predicted model fit. It uses the same RK4 code as above
+
+```{r}
+
+nvar=1
+C=12
+
+y=array(dim=(nvar))
+
+derivs<-function(x,y){
+	yx[1]=-out$par[1]*y[1]+out$par[2]*y[1]*(C-y[1])/(1+out$par[3]*(C-y[1]))
+	yx
+}
+
+#----------------------------------------------------------------
+
+#set the model initial conditions 
+
+y[1]=0.1
+
+#----------------------------------------------------------------
+
+#set the number of iterations (obs), integration step (h)  and start time (v)
+
+obs=10000
+v=0.0
+h=0.01
+
+#----------------------------------------------------------------
+
+#arrays for the RK4 integrator (see below)
+
+yt=array(1:nvar)
+dyt=array(1:nvar)
+dym=array(1:nvar)
+yout=array(1:nvar)
+yx=array(1:nvar)
+eqn=array(1:nvar)
+
+
+#The next set of code defines, as a function, the RK4 integrator:
+
+rk4=function(dydx,y,t,n){
+for(jj in	1:n)
+	yt[jj]=y[jj]+dydx[jj]*h/2
+	dyt=derivs(t+h/2,yt)
+for(jj in 1:n)	
+	yt[jj]=y[jj]+h/2*dyt[jj]
+	dym=derivs(t+h/2,yt)
+for(jj in 1:n)
+	yt[jj]=y[jj]+h*dym[jj]
+	dym=dyt+dym
+	dyt=derivs(t+h,yt)
+for(jj in 1:n)
+	yout[jj]=y[jj]+(h/6)*(dydx[jj]+dyt[jj]+2*dym[jj])
+	yout
+}
+
+#----------------------------------------------------------------
+
+#The next set of code sets out the main part integrating the model
+
+#define an output array
+
+xout=array(dim=c(obs,nvar))
+tout=array(dim=c(obs))
+
+#iterate the model 
+
+for(i in 1:obs){
+	eqn=derivs(v,y)
+	y=rk4(eqn,y,v,nvar)
+
+	v=v+h
+	xout[i]=y
+	tout[i]=v
+}
+
+plot(seq(0,h*obs,length=10),seq(0,13,length=10),
+     bty="l",xlab="Time",ylab="log(PFU)/ml",main="Virus Growth Dynamics",type="n")
+
+lines(tout,xout[,1],col="black")
+
+tpoints=V[,3]
+
+for(i in 4:6){
+dat=log(V[V[,2]==i,1])
+points(tpoints[1:4],dat,pch=19)}
+```
+
