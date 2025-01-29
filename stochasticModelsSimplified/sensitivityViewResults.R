@@ -2,7 +2,8 @@ library(here)
 library(ggplot2 )
 library(reshape2)
 
-
+source(here(".//stochasticModelsSimplified//midgutSensitivityAnalysis.R"))
+source(here(".//stochasticModelsSimplified//hemocoelSalivaSensitivityAnalysis.R"))
 #********************************************Midgut results**************************************************
 midRes <- readRDS(here(".//stochasticModelsSimplified//sensitivityMidgut240917.rds"))
 

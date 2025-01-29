@@ -13,11 +13,11 @@
 ## Contents
 - `data/`: contains all the data used to inform the mechanistic modelling
 
-- `inVitro/`: contains the code for the \textit{in vitro} growth curve model presented in Fig. S6
+- `inVitro/`: contains the code for the *in vitro* growth curve model presented in Fig. S6
 
-- `stochasticModelSimplified/`:
+- `stochasticModelSimplified/`: contains the code for the sensitivity analysis
 
-- `stochasticModelsSimplifiedExtension/`
+- `stochasticModelsSimplifiedExtension/` ...
 
 - `stochasticModelsSimplificedSGEscape/`
 
