@@ -8,3 +8,17 @@
 <sup>4</sup> Arbovirus and Viral Hemorrhagic Fevers Unit, Institut Pasteur de Dakar, Dakar, Senegal
 <sup>5</sup> Department of Biology, University of Oxford, Oxford, United Kingdom
 <sup>6</sup> Institut Pasteur, Université Paris Cité, Mouse Genetics Laboratory, Paris, France
+
+##Abstract
+
+## Contents
+- `data/`: contains all the data used to inform the mechanistic modelling
+
+- `inVitro/`: 
+
+- `stochasticModelSimplified/`:
+
+- `stochasticModelsSimplifiedExtension/`
+
+- `stochasticModelsSimplificedSGEscape/`
+
