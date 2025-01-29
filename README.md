@@ -9,12 +9,11 @@
 <sup>5</sup> Department of Biology, University of Oxford, Oxford, United Kingdom
 <sup>6</sup> Institut Pasteur, Université Paris Cité, Mouse Genetics Laboratory, Paris, France
 
-##Abstract
 
 ## Contents
 - `data/`: contains all the data used to inform the mechanistic modelling
 
-- `inVitro/`: 
+- `inVitro/`: contains the code for the \textit{in vitro} growth curve model presented in Fig. S6
 
 - `stochasticModelSimplified/`:
 

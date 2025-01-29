@@ -1,6 +1,6 @@
 library("here")
 
-source(here(".//inVitro//JensUpdateLogisticFunction//dataFirstSet.R"))
+source(here(".//inVitro//dataFirstSet.R"))
 
 dat <- dat[dat$Chimera %in% c("Senegal","Thai"),]
 
