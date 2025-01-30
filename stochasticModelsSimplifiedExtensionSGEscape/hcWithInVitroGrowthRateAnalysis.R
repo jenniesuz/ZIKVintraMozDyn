@@ -23,7 +23,7 @@ dens = dgamma(x, shape=sh, scale=sc)
 plot(x, dens, type='l')
 
 
-#***************Senegal median growth rate in vitro***********************
+#**************************************
 #*****    ***
 modelOutput <- repeatModel(virus_params(bloodmealClearance = 1/72
                                         ,propSuccessInf = 10^-4
@@ -76,8 +76,8 @@ cols <- c("#8c510a"
 propsSen <- rbind.data.frame(propsSen1,propsSen2,propsSen3,propsSen4,propsSen5)
 
 
-tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_InfUpdated.tiff")
-     , height =6, width = 4, units = 'in', compression="lzw", res=400)
+#tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_InfUpdated.tiff") 
+#    , height =6, width = 4, units = 'in', compression="lzw", res=400)
 
 
 ggplot(propsSen) +
@@ -101,10 +101,10 @@ ggplot(propsSen) +
 
 
 
-dev.off()
+#dev.off()
 
-tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_dissUpdated.tiff")
-     , height =6, width = 4, units = 'in', compression="lzw", res=400)
+#tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_dissUpdated.tiff")
+#     , height =6, width = 4, units = 'in', compression="lzw", res=400)
 
 
 ggplot(propsSen) +
@@ -127,13 +127,11 @@ ggplot(propsSen) +
   )
 
 
-dev.off()
+#dev.off()
 
 
-
-
-tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_transUpdated.tiff")
-     , height =6, width = 4, units = 'in', compression="lzw", res=400)
+#tiff(here::here(".//stochasticModelsSimplifiedExtensionSGEscape//fig_transUpdated.tiff")
+#     , height =6, width = 4, units = 'in', compression="lzw", res=400)
 
 
 ggplot(propsSen) +
@@ -158,9 +156,7 @@ ggplot(propsSen) +
 #saveRDS(dissPlotHemo,"dissPlotHemo.rds")
 #saveRDS(transPlotHemo,"transPlotHemo.rds")
 
-
-
-dev.off()
+#dev.off()
 
 
 

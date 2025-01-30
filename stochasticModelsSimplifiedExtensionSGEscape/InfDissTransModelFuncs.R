@@ -31,7 +31,7 @@ infDissTransModel <- function(startingVirus
   
   
   lvrates <- function(y,params,t){
-    return( c(params$bloodmealClearance*y["Gv"]               # virus is cleared as bloodmeal digested
+    return( c(params$bloodmealClearance*y["Gv"]               
               ,y["Gv"]*propSuccessInf
               ,y["Mv"]*params$growthRateM*(carryCap - y["Mv"])/params$carryCap
               ,params$escapeRateM*y["Mv"]
@@ -45,7 +45,7 @@ infDissTransModel <- function(startingVirus
   
   out <- ssa.adaptivetau(c(Gv = round(startingVirus*0.003,0), Mv = 0, Hv = 0, Sv = 0),
                        transitions, lvrates, params, tf=360
-                       , tl.params=list(epsilon=0.005)) # time accuracy trade-off - larger values of epsilon less accurate - may overshoot therefore get negative values but quicker
+                       , tl.params=list(epsilon=0.005)) 
   return(data.frame(out))
 }
 

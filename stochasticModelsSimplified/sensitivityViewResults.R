@@ -27,7 +27,7 @@ midRes$variable <- factor(midRes$variable
                                    )
 
 
-tiff(here(".//stochasticModelsSimplified//fig_midgutSensitivity.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_midgutSensitivity.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(midRes) +
   geom_point(aes(x=value,y=proportionInfected),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -45,7 +45,7 @@ ggplot(midRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
 
@@ -73,7 +73,7 @@ hcRes$variable <- factor(hcRes$variable
 )
 
 
-tiff(here(".//stochasticModelsSimplified//fig_HSevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_HSevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(hcRes) +
   geom_point(aes(x=value,y=sevenDaysH),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -91,10 +91,10 @@ ggplot(hcRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
-tiff(here(".//stochasticModelsSimplified//fig_SsevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_SsevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(hcRes) +
   geom_point(aes(x=value,y=sevenDaysS),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -112,7 +112,7 @@ ggplot(hcRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
 
@@ -148,7 +148,7 @@ hcRes$diffHS7 <- hcRes$sevenDaysH - hcRes$sevenDaysS
 hcRes$diffHS10 <- hcRes$tenDaysH - hcRes$tenDaysS
 hcRes$diffHS14 <- hcRes$fourteenDaysH - hcRes$fourteenDaysS
 
-tiff(here(".//stochasticModelsSimplified//fig_HSevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_HSevenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(hcRes) +
   geom_point(aes(x=value,y=sevenDaysH),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -166,10 +166,10 @@ ggplot(hcRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
-tiff(here(".//stochasticModelsSimplified//fig_StenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_StenDaysSensitivity2.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(hcRes) +
   geom_point(aes(x=value,y=tenDaysS),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -187,12 +187,12 @@ ggplot(hcRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
 
 
-tiff(here(".//stochasticModelsSimplified//fig_SsevenDaysSensitivityDifference.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
+#tiff(here(".//stochasticModelsSimplified//fig_SsevenDaysSensitivityDifference.tiff"), height =4, width = 5, units = 'in', compression="lzw", res=400)
 ggplot(hcRes) +
   geom_point(aes(x=value,y=diffHS7),col="grey",alpha=0.5,size=0.5) +
   facet_wrap(~variable, scales="free") +
@@ -210,6 +210,6 @@ ggplot(hcRes) +
         ,strip.text=element_text(size=8)
         ,strip.background =element_blank()
   )
-dev.off()
+#dev.off()
 
 
